@@ -213,7 +213,7 @@ export const defaults = Object.freeze<SystemConfig>({
   },
   machineLearning: {
     enabled: process.env.IMMICH_MACHINE_LEARNING_ENABLED !== 'false',
-    urls: [process.env.IMMICH_MACHINE_LEARNING_URL || 'http://immich-machine-learning:3003'],
+    urls: [process.env.IMMICH_MACHINE_LEARNING_URL || 'http://localhost:3003'],
     clip: {
       enabled: true,
       modelName: 'ViT-B-32__openai',

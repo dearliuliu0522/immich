@@ -16,6 +16,7 @@
   },
   "license": "GNU Affero General Public License version 3",
   "dependencies": {
+    "@immich/sdk": "^1.128.0",
     "@oazapfts/runtime": "^1.0.2"
   },
   "devDependencies": {

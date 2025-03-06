@@ -178,7 +178,7 @@ const getEnv = (): EnvData => {
   const databaseUrl = dto.DB_URL;
 
   let redisConfig = {
-    host: dto.REDIS_HOSTNAME || 'redis',
+    host: dto.REDIS_HOSTNAME || 'localhost',
     port: dto.REDIS_PORT || 6379,
     db: dto.REDIS_DBINDEX || 0,
     username: dto.REDIS_USERNAME || undefined,
@@ -210,7 +210,7 @@ const getEnv = (): EnvData => {
 
   const parts = {
     connectionType: 'parts',
-    host: dto.DB_HOSTNAME || 'database',
+    host: dto.DB_HOSTNAME || 'localhost',
     port: dto.DB_PORT || 5432,
     username: dto.DB_USERNAME || 'postgres',
     password: dto.DB_PASSWORD || 'postgres',
