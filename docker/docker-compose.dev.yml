@@ -25,7 +25,7 @@ services:
       context: ../
       dockerfile: server/Dockerfile
       target: dev
-    restart: always
+    restart: unless-stopped
     volumes:
       - ../server:/usr/src/app
       - ../open-api:/usr/src/open-api
@@ -95,12 +95,12 @@ services:
     image: immich-machine-learning-dev:latest
     # extends:
     #   file: hwaccel.ml.yml
-    #   service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference
+    #   service: cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference
     build:
       context: ../machine-learning
       dockerfile: Dockerfile
       args:
-        - DEVICE=cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference
+        - DEVICE=cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference
     ports:
       - 3003:3003
     volumes:
@@ -116,7 +116,7 @@ services:
 
   redis:
     container_name: immich_redis
-    image: redis:6.2-alpine@sha256:148bb5411c184abd288d9aaed139c98123eeb8824c5d3fce03cf721db58066d8
+    image: docker.io/valkey/valkey:8-bookworm@sha256:4a9f847af90037d59b34cd4d4ad14c6e055f46540cf4ff757aaafb266060fa28
     healthcheck:
       test: redis-cli ping || exit 1
 

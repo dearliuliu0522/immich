@@ -2,9 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/domain/models/log.model.dart';
+import 'package:immich_mobile/domain/models/user.model.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
-import 'package:immich_mobile/entities/user.entity.dart';
+import 'package:immich_mobile/models/folder/recursive_folder.model.dart';
 import 'package:immich_mobile/models/memories/memory.model.dart';
 import 'package:immich_mobile/models/search/search_filter.model.dart';
 import 'package:immich_mobile/models/shared_link/shared_link.model.dart';
@@ -35,6 +36,7 @@ import 'package:immich_mobile/pages/editing/edit.page.dart';
 import 'package:immich_mobile/pages/editing/filter.page.dart';
 import 'package:immich_mobile/pages/library/archive.page.dart';
 import 'package:immich_mobile/pages/library/favorite.page.dart';
+import 'package:immich_mobile/pages/library/folder/folder.page.dart';
 import 'package:immich_mobile/pages/library/library.page.dart';
 import 'package:immich_mobile/pages/library/local_albums.page.dart';
 import 'package:immich_mobile/pages/library/partner/partner.page.dart';
@@ -56,7 +58,7 @@ import 'package:immich_mobile/pages/search/all_videos.page.dart';
 import 'package:immich_mobile/pages/search/map/map.page.dart';
 import 'package:immich_mobile/pages/search/map/map_location_picker.page.dart';
 import 'package:immich_mobile/pages/search/person_result.page.dart';
-import 'package:immich_mobile/pages/search/recently_added.page.dart';
+import 'package:immich_mobile/pages/search/recently_taken.page.dart';
 import 'package:immich_mobile/pages/search/search.page.dart';
 import 'package:immich_mobile/pages/share_intent/share_intent.page.dart';
 import 'package:immich_mobile/providers/api.provider.dart';
@@ -158,7 +160,7 @@ class AppRouter extends RootStackRouter {
       guards: [_authGuard, _duplicateGuard],
     ),
     AutoRoute(
-      page: RecentlyAddedRoute.page,
+      page: RecentlyTakenRoute.page,
       guards: [_authGuard, _duplicateGuard],
     ),
     CustomRoute(
@@ -206,6 +208,11 @@ class AppRouter extends RootStackRouter {
       page: PartnerRoute.page,
       guards: [_authGuard, _duplicateGuard],
       transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(
+      page: FolderRoute.page,
+      guards: [_authGuard],
+      transitionsBuilder: TransitionsBuilders.fadeIn,
     ),
     AutoRoute(
       page: PartnerDetailRoute.page,

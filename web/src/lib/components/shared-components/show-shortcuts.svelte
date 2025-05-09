@@ -25,6 +25,7 @@
     shortcuts = {
       general: [
         { key: ['←', '→'], action: $t('previous_or_next_photo') },
+        { key: ['x'], action: $t('select') },
         { key: ['Esc'], action: $t('back_close_deselect') },
         { key: ['Ctrl', 'k'], action: $t('search_your_photos') },
         { key: ['Ctrl', '⇧', 'k'], action: $t('open_the_search_filters') },
@@ -54,7 +55,7 @@
             <div class="grid grid-cols-[30%_70%] items-center gap-4 pt-4 text-sm">
               <div class="flex justify-self-end">
                 {#each shortcut.key as key (key)}
-                  <p class="mr-1 flex items-center justify-center justify-self-end rounded-lg bg-immich-primary/25 p-2">
+                  <p class="me-1 flex items-center justify-center justify-self-end rounded-lg bg-immich-primary/25 p-2">
                     {key}
                   </p>
                 {/each}
@@ -73,7 +74,7 @@
             <div class="grid grid-cols-[30%_70%] items-center gap-4 pt-4 text-sm">
               <div class="flex justify-self-end">
                 {#each shortcut.key as key (key)}
-                  <p class="mr-1 flex items-center justify-center justify-self-end rounded-lg bg-immich-primary/25 p-2">
+                  <p class="me-1 flex items-center justify-center justify-self-end rounded-lg bg-immich-primary/25 p-2">
                     {key}
                   </p>
                 {/each}

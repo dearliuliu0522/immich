@@ -261,9 +261,11 @@
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 1100;
+						ProvisioningStyle = Automatic;
 					};
 					FAC6F88F2D287C890078CB2F = {
 						CreatedOnToolsVersion = 16.0;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -540,12 +542,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 205;
 				CUSTOM_GROUP_ID = group.app.immich.share;
 				DEVELOPMENT_TEAM = 2JU8L4BVQ4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+>>>>>>> main
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -683,12 +689,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 205;
 				CUSTOM_GROUP_ID = group.app.immich.share;
 				DEVELOPMENT_TEAM = 2JU8L4BVQ4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+>>>>>>> main
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -712,12 +722,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 205;
 				CUSTOM_GROUP_ID = group.app.immich.share;
 				DEVELOPMENT_TEAM = 2JU8L4BVQ4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+>>>>>>> main
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -744,7 +758,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 205;
 				CUSTOM_GROUP_ID = group.app.immich.share;
 				DEVELOPMENT_TEAM = 2JU8L4BVQ4;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -765,6 +779,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = app.aizanjia.vdebug.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -786,7 +801,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 205;
 				CUSTOM_GROUP_ID = group.app.immich.share;
 				DEVELOPMENT_TEAM = 2JU8L4BVQ4;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -806,6 +821,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = app.aizanjia.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -825,7 +841,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 205;
 				CUSTOM_GROUP_ID = group.app.immich.share;
 				DEVELOPMENT_TEAM = 2JU8L4BVQ4;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -845,6 +861,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = app.aizanjia.profile.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

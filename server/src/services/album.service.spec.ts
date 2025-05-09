@@ -41,8 +41,20 @@ describe(AlbumService.name, () => {
     it('gets list of albums for auth user', async () => {
       mocks.album.getOwned.mockResolvedValue([albumStub.empty, albumStub.sharedWithUser]);
       mocks.album.getMetadataForIds.mockResolvedValue([
-        { albumId: albumStub.empty.id, assetCount: 0, startDate: null, endDate: null },
-        { albumId: albumStub.sharedWithUser.id, assetCount: 0, startDate: null, endDate: null },
+        {
+          albumId: albumStub.empty.id,
+          assetCount: 0,
+          startDate: null,
+          endDate: null,
+          lastModifiedAssetTimestamp: null,
+        },
+        {
+          albumId: albumStub.sharedWithUser.id,
+          assetCount: 0,
+          startDate: null,
+          endDate: null,
+          lastModifiedAssetTimestamp: null,
+        },
       ]);
 
       const result = await sut.getAll(authStub.admin, {});
@@ -59,6 +71,7 @@ describe(AlbumService.name, () => {
           assetCount: 1,
           startDate: new Date('1970-01-01'),
           endDate: new Date('1970-01-01'),
+          lastModifiedAssetTimestamp: new Date('1970-01-01'),
         },
       ]);
 
@@ -71,7 +84,13 @@ describe(AlbumService.name, () => {
     it('gets list of albums that are shared', async () => {
       mocks.album.getShared.mockResolvedValue([albumStub.sharedWithUser]);
       mocks.album.getMetadataForIds.mockResolvedValue([
-        { albumId: albumStub.sharedWithUser.id, assetCount: 0, startDate: null, endDate: null },
+        {
+          albumId: albumStub.sharedWithUser.id,
+          assetCount: 0,
+          startDate: null,
+          endDate: null,
+          lastModifiedAssetTimestamp: null,
+        },
       ]);
 
       const result = await sut.getAll(authStub.admin, { shared: true });
@@ -83,7 +102,13 @@ describe(AlbumService.name, () => {
     it('gets list of albums that are NOT shared', async () => {
       mocks.album.getNotShared.mockResolvedValue([albumStub.empty]);
       mocks.album.getMetadataForIds.mockResolvedValue([
-        { albumId: albumStub.empty.id, assetCount: 0, startDate: null, endDate: null },
+        {
+          albumId: albumStub.empty.id,
+          assetCount: 0,
+          startDate: null,
+          endDate: null,
+          lastModifiedAssetTimestamp: null,
+        },
       ]);
 
       const result = await sut.getAll(authStub.admin, { shared: false });
@@ -101,6 +126,7 @@ describe(AlbumService.name, () => {
         assetCount: 1,
         startDate: new Date('1970-01-01'),
         endDate: new Date('1970-01-01'),
+        lastModifiedAssetTimestamp: new Date('1970-01-01'),
       },
     ]);
 
@@ -347,6 +373,7 @@ describe(AlbumService.name, () => {
     it('should remove a shared user from an owned album', async () => {
       mocks.access.album.checkOwnerAccess.mockResolvedValue(new Set([albumStub.sharedWithUser.id]));
       mocks.album.getById.mockResolvedValue(albumStub.sharedWithUser);
+      mocks.albumUser.delete.mockResolvedValue();
 
       await expect(
         sut.removeUser(authStub.admin, albumStub.sharedWithUser.id, userStub.user1.id),
@@ -376,6 +403,7 @@ describe(AlbumService.name, () => {
 
     it('should allow a shared user to remove themselves', async () => {
       mocks.album.getById.mockResolvedValue(albumStub.sharedWithUser);
+      mocks.albumUser.delete.mockResolvedValue();
 
       await sut.removeUser(authStub.user1, albumStub.sharedWithUser.id, authStub.user1.user.id);
 
@@ -388,6 +416,7 @@ describe(AlbumService.name, () => {
 
     it('should allow a shared user to remove themselves using "me"', async () => {
       mocks.album.getById.mockResolvedValue(albumStub.sharedWithUser);
+      mocks.albumUser.delete.mockResolvedValue();
 
       await sut.removeUser(authStub.user1, albumStub.sharedWithUser.id, 'me');
 
@@ -422,6 +451,8 @@ describe(AlbumService.name, () => {
   describe('updateUser', () => {
     it('should update user role', async () => {
       mocks.access.album.checkOwnerAccess.mockResolvedValue(new Set([albumStub.sharedWithAdmin.id]));
+      mocks.albumUser.update.mockResolvedValue(null as any);
+
       await sut.updateUser(authStub.user1, albumStub.sharedWithAdmin.id, userStub.admin.id, {
         role: AlbumUserRole.EDITOR,
       });
@@ -442,6 +473,7 @@ describe(AlbumService.name, () => {
           assetCount: 1,
           startDate: new Date('1970-01-01'),
           endDate: new Date('1970-01-01'),
+          lastModifiedAssetTimestamp: new Date('1970-01-01'),
         },
       ]);
 
@@ -463,6 +495,7 @@ describe(AlbumService.name, () => {
           assetCount: 1,
           startDate: new Date('1970-01-01'),
           endDate: new Date('1970-01-01'),
+          lastModifiedAssetTimestamp: new Date('1970-01-01'),
         },
       ]);
 
@@ -484,6 +517,7 @@ describe(AlbumService.name, () => {
           assetCount: 1,
           startDate: new Date('1970-01-01'),
           endDate: new Date('1970-01-01'),
+          lastModifiedAssetTimestamp: new Date('1970-01-01'),
         },
       ]);
 
@@ -572,7 +606,7 @@ describe(AlbumService.name, () => {
       expect(mocks.album.addAssetIds).toHaveBeenCalledWith('album-123', ['asset-1', 'asset-2', 'asset-3']);
       expect(mocks.event.emit).toHaveBeenCalledWith('album.update', {
         id: 'album-123',
-        recipientIds: ['admin_id'],
+        recipientId: 'admin_id',
       });
     });
 

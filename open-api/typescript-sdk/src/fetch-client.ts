@@ -1,6 +1,6 @@
 /**
  * Immich
- * 1.129.0
+ * 1.132.3
  * DO NOT MODIFY - This file has been generated using oazapfts.
  * See https://www.npmjs.com/package/oazapfts
  */
@@ -39,6 +39,48 @@ export type ActivityCreateDto = {
 export type ActivityStatisticsResponseDto = {
     comments: number;
 };
+export type NotificationCreateDto = {
+    data?: object;
+    description?: string | null;
+    level?: NotificationLevel;
+    readAt?: string | null;
+    title: string;
+    "type"?: NotificationType;
+    userId: string;
+};
+export type NotificationDto = {
+    createdAt: string;
+    data?: object;
+    description?: string;
+    id: string;
+    level: NotificationLevel;
+    readAt?: string;
+    title: string;
+    "type": NotificationType;
+};
+export type TemplateDto = {
+    template: string;
+};
+export type TemplateResponseDto = {
+    html: string;
+    name: string;
+};
+export type SystemConfigSmtpTransportDto = {
+    host: string;
+    ignoreCert: boolean;
+    password: string;
+    port: number;
+    username: string;
+};
+export type SystemConfigSmtpDto = {
+    enabled: boolean;
+    "from": string;
+    replyTo: string;
+    transport: SystemConfigSmtpTransportDto;
+};
+export type TestEmailResponseDto = {
+    messageId: string;
+};
 export type UserLicense = {
     activatedAt: string;
     activationKey: string;
@@ -64,6 +106,7 @@ export type UserAdminResponseDto = {
     updatedAt: string;
 };
 export type UserAdminCreateDto = {
+    avatarColor?: (UserAvatarColor) | null;
     email: string;
     name: string;
     notify?: boolean;
@@ -76,15 +119,13 @@ export type UserAdminDeleteDto = {
     force?: boolean;
 };
 export type UserAdminUpdateDto = {
+    avatarColor?: (UserAvatarColor) | null;
     email?: string;
     name?: string;
     password?: string;
     quotaSizeInBytes?: number | null;
     shouldChangePassword?: boolean;
     storageLabel?: string | null;
-};
-export type AvatarResponse = {
-    color: UserAvatarColor;
 };
 export type DownloadResponse = {
     archiveSize: number;
@@ -122,7 +163,6 @@ export type TagsResponse = {
     sidebarWeb: boolean;
 };
 export type UserPreferencesResponseDto = {
-    avatar: AvatarResponse;
     download: DownloadResponse;
     emailNotifications: EmailNotificationsResponse;
     folders: FoldersResponse;
@@ -373,11 +413,10 @@ export type AssetMediaCreateDto = {
     duration?: string;
     fileCreatedAt: string;
     fileModifiedAt: string;
-    isArchived?: boolean;
     isFavorite?: boolean;
-    isVisible?: boolean;
     livePhotoVideoId?: string;
     sidecarData?: Blob;
+    visibility?: AssetVisibility;
 };
 export type AssetMediaResponseDto = {
     id: string;
@@ -387,11 +426,11 @@ export type AssetBulkUpdateDto = {
     dateTimeOriginal?: string;
     duplicateId?: string | null;
     ids: string[];
-    isArchived?: boolean;
     isFavorite?: boolean;
     latitude?: number;
     longitude?: number;
     rating?: number;
+    visibility?: AssetVisibility;
 };
 export type AssetBulkUploadCheckItem = {
     /** base64 or hex encoded sha1 hash */
@@ -422,10 +461,6 @@ export type AssetJobsDto = {
     assetIds: string[];
     name: AssetJobName;
 };
-export type MemoryLaneResponseDto = {
-    assets: AssetResponseDto[];
-    yearsAgo: number;
-};
 export type AssetStatsResponseDto = {
     images: number;
     total: number;
@@ -434,12 +469,12 @@ export type AssetStatsResponseDto = {
 export type UpdateAssetDto = {
     dateTimeOriginal?: string;
     description?: string;
-    isArchived?: boolean;
     isFavorite?: boolean;
     latitude?: number;
     livePhotoVideoId?: string | null;
     longitude?: number;
     rating?: number;
+    visibility?: AssetVisibility;
 };
 export type AssetMediaReplaceDto = {
     assetData: Blob;
@@ -663,36 +698,27 @@ export type MemoryUpdateDto = {
     memoryAt?: string;
     seenAt?: string;
 };
-export type TemplateDto = {
-    template: string;
+export type NotificationDeleteAllDto = {
+    ids: string[];
 };
-export type TemplateResponseDto = {
-    html: string;
-    name: string;
+export type NotificationUpdateAllDto = {
+    ids: string[];
+    readAt?: string | null;
 };
-export type SystemConfigSmtpTransportDto = {
-    host: string;
-    ignoreCert: boolean;
-    password: string;
-    port: number;
-    username: string;
-};
-export type SystemConfigSmtpDto = {
-    enabled: boolean;
-    "from": string;
-    replyTo: string;
-    transport: SystemConfigSmtpTransportDto;
-};
-export type TestEmailResponseDto = {
-    messageId: string;
+export type NotificationUpdateDto = {
+    readAt?: string | null;
 };
 export type OAuthConfigDto = {
+    codeChallenge?: string;
     redirectUri: string;
+    state?: string;
 };
 export type OAuthAuthorizeResponseDto = {
     url: string;
 };
 export type OAuthCallbackDto = {
+    codeVerifier?: string;
+    state?: string;
     url: string;
 };
 export type PartnerResponseDto = {
@@ -769,27 +795,6 @@ export type AssetFaceUpdateDto = {
 export type PersonStatisticsResponseDto = {
     assets: number;
 };
-export type FileReportItemDto = {
-    checksum?: string;
-    entityId: string;
-    entityType: PathEntityType;
-    pathType: PathType;
-    pathValue: string;
-};
-export type FileReportDto = {
-    extras: string[];
-    orphans: FileReportItemDto[];
-};
-export type FileChecksumDto = {
-    filenames: string[];
-};
-export type FileChecksumResponseDto = {
-    checksum: string;
-    filename: string;
-};
-export type FileReportFixDto = {
-    items: FileReportItemDto[];
-};
 export type SearchExploreItem = {
     data: AssetResponseDto;
     value: string;
@@ -809,13 +814,11 @@ export type MetadataSearchDto = {
     deviceId?: string;
     encodedVideoPath?: string;
     id?: string;
-    isArchived?: boolean;
     isEncoded?: boolean;
     isFavorite?: boolean;
     isMotion?: boolean;
     isNotInAlbum?: boolean;
     isOffline?: boolean;
-    isVisible?: boolean;
     lensModel?: string | null;
     libraryId?: string | null;
     make?: string;
@@ -838,7 +841,7 @@ export type MetadataSearchDto = {
     "type"?: AssetTypeEnum;
     updatedAfter?: string;
     updatedBefore?: string;
-    withArchived?: boolean;
+    visibility?: AssetVisibility;
     withDeleted?: boolean;
     withExif?: boolean;
     withPeople?: boolean;
@@ -882,13 +885,11 @@ export type RandomSearchDto = {
     createdAfter?: string;
     createdBefore?: string;
     deviceId?: string;
-    isArchived?: boolean;
     isEncoded?: boolean;
     isFavorite?: boolean;
     isMotion?: boolean;
     isNotInAlbum?: boolean;
     isOffline?: boolean;
-    isVisible?: boolean;
     lensModel?: string | null;
     libraryId?: string | null;
     make?: string;
@@ -905,7 +906,7 @@ export type RandomSearchDto = {
     "type"?: AssetTypeEnum;
     updatedAfter?: string;
     updatedBefore?: string;
-    withArchived?: boolean;
+    visibility?: AssetVisibility;
     withDeleted?: boolean;
     withExif?: boolean;
     withPeople?: boolean;
@@ -917,13 +918,12 @@ export type SmartSearchDto = {
     createdAfter?: string;
     createdBefore?: string;
     deviceId?: string;
-    isArchived?: boolean;
     isEncoded?: boolean;
     isFavorite?: boolean;
     isMotion?: boolean;
     isNotInAlbum?: boolean;
     isOffline?: boolean;
-    isVisible?: boolean;
+    language?: string;
     lensModel?: string | null;
     libraryId?: string | null;
     make?: string;
@@ -942,7 +942,7 @@ export type SmartSearchDto = {
     "type"?: AssetTypeEnum;
     updatedAfter?: string;
     updatedBefore?: string;
-    withArchived?: boolean;
+    visibility?: AssetVisibility;
     withDeleted?: boolean;
     withExif?: boolean;
 };
@@ -1178,6 +1178,11 @@ export type SystemConfigFFmpegDto = {
     transcode: TranscodePolicy;
     twoPass: boolean;
 };
+export type SystemConfigGeneratedFullsizeImageDto = {
+    enabled: boolean;
+    format: ImageFormat;
+    quality: number;
+};
 export type SystemConfigGeneratedImageDto = {
     format: ImageFormat;
     quality: number;
@@ -1186,6 +1191,7 @@ export type SystemConfigGeneratedImageDto = {
 export type SystemConfigImageDto = {
     colorspace: Colorspace;
     extractEmbedded: boolean;
+    fullsize: SystemConfigGeneratedFullsizeImageDto;
     preview: SystemConfigGeneratedImageDto;
     thumbnail: SystemConfigGeneratedImageDto;
 };
@@ -1277,6 +1283,8 @@ export type SystemConfigOAuthDto = {
     signingAlgorithm: string;
     storageLabelClaim: string;
     storageQuotaClaim: string;
+    timeout: number;
+    tokenEndpointAuthMethod: OAuthTokenEndpointAuthMethod;
 };
 export type SystemConfigPasswordLoginDto = {
     enabled: boolean;
@@ -1377,6 +1385,7 @@ export type TrashResponseDto = {
     count: number;
 };
 export type UserUpdateMeDto = {
+    avatarColor?: (UserAvatarColor) | null;
     email?: string;
     name?: string;
     password?: string;
@@ -1442,6 +1451,43 @@ export function deleteActivity({ id }: {
         ...opts,
         method: "DELETE"
     }));
+}
+export function createNotification({ notificationCreateDto }: {
+    notificationCreateDto: NotificationCreateDto;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchJson<{
+        status: 201;
+        data: NotificationDto;
+    }>("/admin/notifications", oazapfts.json({
+        ...opts,
+        method: "POST",
+        body: notificationCreateDto
+    })));
+}
+export function getNotificationTemplateAdmin({ name, templateDto }: {
+    name: string;
+    templateDto: TemplateDto;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchJson<{
+        status: 200;
+        data: TemplateResponseDto;
+    }>(`/admin/notifications/templates/${encodeURIComponent(name)}`, oazapfts.json({
+        ...opts,
+        method: "POST",
+        body: templateDto
+    })));
+}
+export function sendTestEmailAdmin({ systemConfigSmtpDto }: {
+    systemConfigSmtpDto: SystemConfigSmtpDto;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchJson<{
+        status: 200;
+        data: TestEmailResponseDto;
+    }>("/admin/notifications/test-email", oazapfts.json({
+        ...opts,
+        method: "POST",
+        body: systemConfigSmtpDto
+    })));
 }
 export function searchUsersAdmin({ withDeleted }: {
     withDeleted?: boolean;
@@ -1809,20 +1855,6 @@ export function runAssetJobs({ assetJobsDto }: {
         body: assetJobsDto
     })));
 }
-export function getMemoryLane({ day, month }: {
-    day: number;
-    month: number;
-}, opts?: Oazapfts.RequestOpts) {
-    return oazapfts.ok(oazapfts.fetchJson<{
-        status: 200;
-        data: MemoryLaneResponseDto[];
-    }>(`/assets/memory-lane${QS.query(QS.explode({
-        day,
-        month
-    }))}`, {
-        ...opts
-    }));
-}
 /**
  * This property was deprecated in v1.116.0
  */
@@ -1838,18 +1870,18 @@ export function getRandom({ count }: {
         ...opts
     }));
 }
-export function getAssetStatistics({ isArchived, isFavorite, isTrashed }: {
-    isArchived?: boolean;
+export function getAssetStatistics({ isFavorite, isTrashed, visibility }: {
     isFavorite?: boolean;
     isTrashed?: boolean;
+    visibility?: AssetVisibility;
 }, opts?: Oazapfts.RequestOpts) {
     return oazapfts.ok(oazapfts.fetchJson<{
         status: 200;
         data: AssetStatsResponseDto;
     }>(`/assets/statistics${QS.query(QS.explode({
-        isArchived,
         isFavorite,
-        isTrashed
+        isTrashed,
+        visibility
     }))}`, {
         ...opts
     }));
@@ -2311,29 +2343,71 @@ export function addMemoryAssets({ id, bulkIdsDto }: {
         body: bulkIdsDto
     })));
 }
-export function getNotificationTemplate({ name, templateDto }: {
-    name: string;
-    templateDto: TemplateDto;
+export function deleteNotifications({ notificationDeleteAllDto }: {
+    notificationDeleteAllDto: NotificationDeleteAllDto;
 }, opts?: Oazapfts.RequestOpts) {
-    return oazapfts.ok(oazapfts.fetchJson<{
-        status: 200;
-        data: TemplateResponseDto;
-    }>(`/notifications/templates/${encodeURIComponent(name)}`, oazapfts.json({
+    return oazapfts.ok(oazapfts.fetchText("/notifications", oazapfts.json({
         ...opts,
-        method: "POST",
-        body: templateDto
+        method: "DELETE",
+        body: notificationDeleteAllDto
     })));
 }
-export function sendTestEmail({ systemConfigSmtpDto }: {
-    systemConfigSmtpDto: SystemConfigSmtpDto;
+export function getNotifications({ id, level, $type, unread }: {
+    id?: string;
+    level?: NotificationLevel;
+    $type?: NotificationType;
+    unread?: boolean;
 }, opts?: Oazapfts.RequestOpts) {
     return oazapfts.ok(oazapfts.fetchJson<{
         status: 200;
-        data: TestEmailResponseDto;
-    }>("/notifications/test-email", oazapfts.json({
+        data: NotificationDto[];
+    }>(`/notifications${QS.query(QS.explode({
+        id,
+        level,
+        "type": $type,
+        unread
+    }))}`, {
+        ...opts
+    }));
+}
+export function updateNotifications({ notificationUpdateAllDto }: {
+    notificationUpdateAllDto: NotificationUpdateAllDto;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchText("/notifications", oazapfts.json({
         ...opts,
-        method: "POST",
-        body: systemConfigSmtpDto
+        method: "PUT",
+        body: notificationUpdateAllDto
+    })));
+}
+export function deleteNotification({ id }: {
+    id: string;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchText(`/notifications/${encodeURIComponent(id)}`, {
+        ...opts,
+        method: "DELETE"
+    }));
+}
+export function getNotification({ id }: {
+    id: string;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchJson<{
+        status: 200;
+        data: NotificationDto;
+    }>(`/notifications/${encodeURIComponent(id)}`, {
+        ...opts
+    }));
+}
+export function updateNotification({ id, notificationUpdateDto }: {
+    id: string;
+    notificationUpdateDto: NotificationUpdateDto;
+}, opts?: Oazapfts.RequestOpts) {
+    return oazapfts.ok(oazapfts.fetchJson<{
+        status: 200;
+        data: NotificationDto;
+    }>(`/notifications/${encodeURIComponent(id)}`, oazapfts.json({
+        ...opts,
+        method: "PUT",
+        body: notificationUpdateDto
     })));
 }
 export function startOAuth({ oAuthConfigDto }: {
@@ -2542,35 +2616,6 @@ export function getPersonThumbnail({ id }: {
     }>(`/people/${encodeURIComponent(id)}/thumbnail`, {
         ...opts
     }));
-}
-export function getAuditFiles(opts?: Oazapfts.RequestOpts) {
-    return oazapfts.ok(oazapfts.fetchJson<{
-        status: 200;
-        data: FileReportDto;
-    }>("/reports", {
-        ...opts
-    }));
-}
-export function getFileChecksums({ fileChecksumDto }: {
-    fileChecksumDto: FileChecksumDto;
-}, opts?: Oazapfts.RequestOpts) {
-    return oazapfts.ok(oazapfts.fetchJson<{
-        status: 201;
-        data: FileChecksumResponseDto[];
-    }>("/reports/checksum", oazapfts.json({
-        ...opts,
-        method: "POST",
-        body: fileChecksumDto
-    })));
-}
-export function fixAuditFiles({ fileReportFixDto }: {
-    fileReportFixDto: FileReportFixDto;
-}, opts?: Oazapfts.RequestOpts) {
-    return oazapfts.ok(oazapfts.fetchText("/reports/fix", oazapfts.json({
-        ...opts,
-        method: "POST",
-        body: fileReportFixDto
-    })));
 }
 export function getAssetsByCity(opts?: Oazapfts.RequestOpts) {
     return oazapfts.ok(oazapfts.fetchJson<{
@@ -3190,9 +3235,8 @@ export function tagAssets({ id, bulkIdsDto }: {
         body: bulkIdsDto
     })));
 }
-export function getTimeBucket({ albumId, isArchived, isFavorite, isTrashed, key, order, personId, size, tagId, timeBucket, userId, withPartners, withStacked }: {
+export function getTimeBucket({ albumId, isFavorite, isTrashed, key, order, personId, size, tagId, timeBucket, userId, visibility, withPartners, withStacked }: {
     albumId?: string;
-    isArchived?: boolean;
     isFavorite?: boolean;
     isTrashed?: boolean;
     key?: string;
@@ -3202,6 +3246,7 @@ export function getTimeBucket({ albumId, isArchived, isFavorite, isTrashed, key,
     tagId?: string;
     timeBucket: string;
     userId?: string;
+    visibility?: AssetVisibility;
     withPartners?: boolean;
     withStacked?: boolean;
 }, opts?: Oazapfts.RequestOpts) {
@@ -3210,7 +3255,6 @@ export function getTimeBucket({ albumId, isArchived, isFavorite, isTrashed, key,
         data: AssetResponseDto[];
     }>(`/timeline/bucket${QS.query(QS.explode({
         albumId,
-        isArchived,
         isFavorite,
         isTrashed,
         key,
@@ -3220,15 +3264,15 @@ export function getTimeBucket({ albumId, isArchived, isFavorite, isTrashed, key,
         tagId,
         timeBucket,
         userId,
+        visibility,
         withPartners,
         withStacked
     }))}`, {
         ...opts
     }));
 }
-export function getTimeBuckets({ albumId, isArchived, isFavorite, isTrashed, key, order, personId, size, tagId, userId, withPartners, withStacked }: {
+export function getTimeBuckets({ albumId, isFavorite, isTrashed, key, order, personId, size, tagId, userId, visibility, withPartners, withStacked }: {
     albumId?: string;
-    isArchived?: boolean;
     isFavorite?: boolean;
     isTrashed?: boolean;
     key?: string;
@@ -3237,6 +3281,7 @@ export function getTimeBuckets({ albumId, isArchived, isFavorite, isTrashed, key
     size: TimeBucketSize;
     tagId?: string;
     userId?: string;
+    visibility?: AssetVisibility;
     withPartners?: boolean;
     withStacked?: boolean;
 }, opts?: Oazapfts.RequestOpts) {
@@ -3245,7 +3290,6 @@ export function getTimeBuckets({ albumId, isArchived, isFavorite, isTrashed, key
         data: TimeBucketResponseDto[];
     }>(`/timeline/buckets${QS.query(QS.explode({
         albumId,
-        isArchived,
         isFavorite,
         isTrashed,
         key,
@@ -3254,6 +3298,7 @@ export function getTimeBuckets({ albumId, isArchived, isFavorite, isTrashed, key
         size,
         tagId,
         userId,
+        visibility,
         withPartners,
         withStacked
     }))}`, {
@@ -3442,6 +3487,18 @@ export enum UserAvatarColor {
     Gray = "gray",
     Amber = "amber"
 }
+export enum NotificationLevel {
+    Success = "success",
+    Error = "error",
+    Warning = "warning",
+    Info = "info"
+}
+export enum NotificationType {
+    JobFailed = "JobFailed",
+    BackupFailed = "BackupFailed",
+    SystemMessage = "SystemMessage",
+    Custom = "Custom"
+}
 export enum UserStatus {
     Active = "active",
     Removing = "removing",
@@ -3516,6 +3573,10 @@ export enum Permission {
     MemoryRead = "memory.read",
     MemoryUpdate = "memory.update",
     MemoryDelete = "memory.delete",
+    NotificationCreate = "notification.create",
+    NotificationRead = "notification.read",
+    NotificationUpdate = "notification.update",
+    NotificationDelete = "notification.delete",
     PartnerCreate = "partner.create",
     PartnerRead = "partner.read",
     PartnerUpdate = "partner.update",
@@ -3552,6 +3613,11 @@ export enum Permission {
     AdminUserUpdate = "admin.user.update",
     AdminUserDelete = "admin.user.delete"
 }
+export enum AssetVisibility {
+    Archive = "archive",
+    Timeline = "timeline",
+    Hidden = "hidden"
+}
 export enum AssetMediaStatus {
     Created = "created",
     Replaced = "replaced",
@@ -3572,6 +3638,7 @@ export enum AssetJobName {
     TranscodeVideo = "transcode-video"
 }
 export enum AssetMediaSize {
+    Fullsize = "fullsize",
     Preview = "preview",
     Thumbnail = "thumbnail"
 }
@@ -3580,7 +3647,8 @@ export enum ManualJobName {
     TagCleanup = "tag-cleanup",
     UserCleanup = "user-cleanup",
     MemoryCleanup = "memory-cleanup",
-    MemoryCreate = "memory-create"
+    MemoryCreate = "memory-create",
+    BackupDatabase = "backup-database"
 }
 export enum JobName {
     ThumbnailGeneration = "thumbnailGeneration",
@@ -3613,20 +3681,6 @@ export enum PartnerDirection {
     SharedBy = "shared-by",
     SharedWith = "shared-with"
 }
-export enum PathEntityType {
-    Asset = "asset",
-    Person = "person",
-    User = "user"
-}
-export enum PathType {
-    Original = "original",
-    Preview = "preview",
-    Thumbnail = "thumbnail",
-    EncodedVideo = "encoded_video",
-    Sidecar = "sidecar",
-    Face = "face",
-    Profile = "profile"
-}
 export enum SearchSuggestionType {
     Country = "country",
     State = "state",
@@ -3647,11 +3701,21 @@ export enum SyncEntityType {
     UserV1 = "UserV1",
     UserDeleteV1 = "UserDeleteV1",
     PartnerV1 = "PartnerV1",
-    PartnerDeleteV1 = "PartnerDeleteV1"
+    PartnerDeleteV1 = "PartnerDeleteV1",
+    AssetV1 = "AssetV1",
+    AssetDeleteV1 = "AssetDeleteV1",
+    AssetExifV1 = "AssetExifV1",
+    PartnerAssetV1 = "PartnerAssetV1",
+    PartnerAssetDeleteV1 = "PartnerAssetDeleteV1",
+    PartnerAssetExifV1 = "PartnerAssetExifV1"
 }
 export enum SyncRequestType {
     UsersV1 = "UsersV1",
-    PartnersV1 = "PartnersV1"
+    PartnersV1 = "PartnersV1",
+    AssetsV1 = "AssetsV1",
+    AssetExifsV1 = "AssetExifsV1",
+    PartnerAssetsV1 = "PartnerAssetsV1",
+    PartnerAssetExifsV1 = "PartnerAssetExifsV1"
 }
 export enum TranscodeHWAccel {
     Nvenc = "nvenc",
@@ -3711,6 +3775,10 @@ export enum LogLevel {
     Warn = "warn",
     Error = "error",
     Fatal = "fatal"
+}
+export enum OAuthTokenEndpointAuthMethod {
+    ClientSecretPost = "client_secret_post",
+    ClientSecretBasic = "client_secret_basic"
 }
 export enum TimeBucketSize {
     Day = "DAY",

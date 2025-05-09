@@ -80,6 +80,7 @@ Information on the current workers can be found [here](/docs/administration/jobs
 | `DB_USERNAME`                       | Database user                                                            |  `postgres`  | server, database<sup>\*1</sup> |
 | `DB_PASSWORD`                       | Database password                                                        |  `postgres`  | server, database<sup>\*1</sup> |
 | `DB_DATABASE_NAME`                  | Database name                                                            |   `immich`   | server, database<sup>\*1</sup> |
+| `DB_SSL_MODE`                       | Database SSL mode                                                        |              | server                         |
 | `DB_VECTOR_EXTENSION`<sup>\*2</sup> | Database vector extension (one of [`pgvector`, `pgvecto.rs`])            | `pgvecto.rs` | server                         |
 | `DB_SKIP_MIGRATIONS`                | Whether to skip running migrations on startup (one of [`true`, `false`]) |   `false`    | server                         |
 
@@ -170,6 +171,8 @@ Redis (Sentinel) URL example JSON before encoding:
 | `MACHINE_LEARNING_MAX_BATCH_SIZE__FACIAL_RECOGNITION`       | Set the maximum number of faces that will be processed at once by the facial recognition model      |  None (`1` if using OpenVINO)   | machine learning |
 | `MACHINE_LEARNING_PING_TIMEOUT`                             | How long (ms) to wait for a PING response when checking if an ML server is available                |             `2000`              | server           |
 | `MACHINE_LEARNING_AVAILABILITY_BACKOFF_TIME`                | How long to ignore ML servers that are offline before trying again                                  |             `30000`             | server           |
+| `MACHINE_LEARNING_RKNN`                                     | Enable RKNN hardware acceleration if supported                                                      |             `True`              | machine learning |
+| `MACHINE_LEARNING_RKNN_THREADS`                             | How many threads of RKNN runtime should be spinned up while inferencing.                            |               `1`               | machine learning |
 
 \*1: It is recommended to begin with this parameter when changing the concurrency levels of the machine learning service and then tune the other ones.
 
