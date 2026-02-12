@@ -21,7 +21,11 @@ dependencies:
   device_info_plus: ^12.2.0
   # DB
   drift: ^2.26.0
-  drift_flutter: ^0.2.6
+  drift_flutter:
+    git:
+      url: https://github.com/immich-app/drift
+      ref: 53ef7e9f19fe8f68416251760b4b99fe43f1c575
+      path: drift_flutter/
   dynamic_color: ^1.8.1
   easy_localization: ^3.0.8
   ffi: ^2.1.4
@@ -121,6 +125,8 @@ dependency_overrides:
       url: https://github.com/immich-app/drift
       ref: '53ef7e9f19fe8f68416251760b4b99fe43f1c575'
       path: drift/
+
+  bonsoir: ^5.1.11
 
 flutter:
   uses-material-design: true
