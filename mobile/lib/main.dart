@@ -50,16 +50,24 @@ import 'package:timezone/data/latest.dart';
 
 void main() async {
   ImmichWidgetsBinding();
+  // 后台 Worker 锁，防止后台任务重复启动
   unawaited(BackgroundWorkerLockService(BackgroundWorkerLockApi()).lock());
+  // 数据库初始化。isar是本地数据库，drift是SQL，logDb是日志
   final (isar, drift, logDb) = await Bootstrap.initDB();
+  // Domain 层初始化
   await Bootstrap.initDomain(isar, drift, logDb);
+  // App 全局初始化
   await initApp();
   // Warm-up isolate pool for worker manager
+  // 创建 isolate 池
   await workerManagerPatch.init(dynamicSpawning: true, isolatesCount: max(Platform.numberOfProcessors - 1, 5));
+  // 数据库 migration
   await migrateDatabaseIfNeeded(isar, drift);
+  // SSL 配置
   HttpSSLOptions.apply();
 
   runApp(
+    // ProviderScope 注入
     ProviderScope(
       overrides: [
         dbProvider.overrideWithValue(isar),
@@ -73,10 +81,12 @@ void main() async {
 
 Future<void> initApp() async {
   await EasyLocalization.ensureInitialized();
+  // 日期国际化
   await initializeDateFormatting();
 
   if (Platform.isAndroid) {
     try {
+      // Android 高刷新率
       await FlutterDisplayMode.setHighRefreshRate();
       dPrint(() => "Enabled high refresh mode");
     } catch (e) {
@@ -84,10 +94,12 @@ Future<void> initApp() async {
     }
   }
 
+  // 动态主题
   await DynamicTheme.fetchSystemPalette();
 
   final log = Logger("ImmichErrorLogger");
 
+  // 全局 Error 捕获
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     log.severe(
@@ -102,9 +114,10 @@ Future<void> initApp() async {
     return true;
   };
 
+  // timezone 初始化
   initializeTimeZones();
 
-  // Initialize the file downloader
+  // FileDownloader 初始化
   await FileDownloader().configure(
     // maxConcurrent: 6, maxConcurrentByHost(server):6, maxConcurrentByGroup: 3
 
@@ -116,6 +129,7 @@ Future<void> initApp() async {
 
   unawaited(FileDownloader().trackTasks());
 
+  // License 注册
   LicenseRegistry.addLicense(() async* {
     for (final license in nonPubLicenses.entries) {
       yield LicenseEntryWithLineBreaks([license.key], license.value);
@@ -133,6 +147,7 @@ class ImmichApp extends ConsumerStatefulWidget {
 class ImmichAppState extends ConsumerState<ImmichApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 生命周期监听。把 Flutter lifecycle 转发到 Riverpod
     switch (state) {
       case AppLifecycleState.resumed:
         dPrint(() => "[APP STATE] resumed");
@@ -161,18 +176,21 @@ class ImmichAppState extends ConsumerState<ImmichApp> with WidgetsBindingObserve
     WidgetsBinding.instance.addObserver(this);
 
     // Draw the app from edge to edge
+    // System UI 初始化
     unawaited(SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge));
 
     // Sets the navigation bar color
     SystemUiOverlayStyle overlayStyle = const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent);
+    // Android SDK 兼容
     if (Platform.isAndroid) {
-      // Android 8 does not support transparent app bars
+      // Android 8 不支持透明 navigation bar
       final info = await DeviceInfoPlugin().androidInfo;
       if (info.version.sdkInt <= 26) {
         overlayStyle = context.isDarkTheme ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
       }
     }
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
+    // 本地通知初始化
     await ref.read(localNotificationService).setup();
   }
 
@@ -212,6 +230,7 @@ class ImmichAppState extends ConsumerState<ImmichApp> with WidgetsBindingObserve
     initApp().then((_) => dPrint(() => "App Init Completed"));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // needs to be delayed so that EasyLocalization is working
+      // Background Service 切换
       if (Store.isBetaTimelineEnabled) {
         ref.read(backgroundServiceProvider).disableService();
         ref.read(backgroundWorkerFgServiceProvider).enable();
@@ -283,6 +302,7 @@ class MainWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 国际化 root wrapper
     return EasyLocalization(
       supportedLocales: locales.values.toList(),
       path: translationsPath,
